@@ -56,11 +56,11 @@ const border = '==========';
   let i = min;
 
   for (let i = min; i <= max; i++) {
-    console.log(i);
+    (i % 2 === 0) && console.log(i);
   }
 
   while (i <= max) {
-    console.log(i);
+    (i % 2 === 0) && console.log(i);
     i++;
   }
 
