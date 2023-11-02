@@ -100,6 +100,7 @@ const border = '==========';
   const flag = false;
 
   if (flag) {
+    
       //что бы промпты не надоедали
       let sum     = 0;
       let counter = 0;
