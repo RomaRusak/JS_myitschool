@@ -140,25 +140,32 @@ const border = '==========';
 }
 
 {
-  const height  = 5;
-  const width   = height * 2 - 1;
-  const center  = Math.floor((width / 2));
-  const mainArr = new Array;
+  const flag = false;
 
-  for (let i = 0; i < height; i++) {
-    const arr = new Array;
-    
-    for (let j = 0; j < width; j++) {
-      if ((j < center - i) || (j > center + i)) {
-        arr.push(' ');
-        continue
+  if (flag) {
+    const height  = +prompt('высота треугольника');
+    const width   = height * 2 - 1;
+    const center  = Math.floor((width / 2));
+    const mainArr = new Array;
+
+    if (height) {
+      for (let i = 0; i < height; i++) {
+        const arr = new Array;
+        
+        for (let j = 0; j < width; j++) {
+          if ((j < center - i) || (j > center + i)) {
+            arr.push(' ');
+            continue
+          }
+          arr.push('*');
+        }
+        mainArr.push(arr);
       }
-      arr.push('*');
-    }
-    mainArr.push(arr);
-  }
+    
+      mainArr.forEach(row => {
+        console.log(row.join(' '));
+      })
+    } else alert('введите число')
 
-  mainArr.forEach(row => {
-    console.log(row.join(' '));
-  })
+  }
 }
