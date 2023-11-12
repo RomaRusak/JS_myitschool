@@ -1,172 +1,148 @@
 'use strict';
 
-const border = '==========';
+const getBorder = () => {
+  console.log('===========');
+};
 
-{
-  console.log('задача 1');
+const task1 = (a,b,c) => (a - b) / c;
 
-  const arr = [1,2,3,4,5];
+console.log(task1(9,1,2));
+getBorder();
 
-  for (let i = 0; i < arr.length; i++) console.log(arr[i]);
-  console.log(border);
+const task2 = (a) => [Math.pow(a,2), Math.pow(a,3),];
+
+console.log(task2(3));
+getBorder();
+
+const task3 = (a,b) => [`меньшее: ${Math.min(a,b)}`, `большее: ${Math.max(a,b)}`];
+
+console.log(task3(1,2));
+getBorder();
+
+const isEven = (num) => num % 2 === 0;
+
+console.log(isEven(3));
+getBorder();
+
+const task6 = (arr) => arr.filter(item => isEven(item));
+
+console.log(task6([4,8,15,16,23,42]));
+getBorder();
+
+const task7 = (char, customChar) => {
+  if ([1,2,3,4,5,6,7,8,9].includes(char)) {
+    const isCustomCharExists = ![undefined, ' '].includes(customChar);
+
+    for (let i = 1; i <= char; i++) {
+      const arr = [];
+      for (let j = 0; j < i; j++) {
+        arr.push(isCustomCharExists ? customChar : i);
+      }
+      console.log(arr.join(''));
+    }
+  }
 }
 
-{
-  console.log('задача 2');
+task7(8, '$');
+getBorder();
 
-  [-2, -1, -3, 15, 0, -4, 2, -5, 9, -15, 0, 4, 5, -6, 10, 7].forEach(item => (item > - 10 && item < 3) && console.log(item));
-  console.log(border);
-}
-
-{
-  console.log('задача 3');
-
-  const arr = new Array;
-  const min = 23;
-  const max = 57;
-  let   i   = 0;
-
+const task8 = (height, isReverse = false) => {
   {
-    for (let i = min; i <= max; i++) {
-      arr.push(i);
-      console.log(arr[arr.length - 1]);
-    }
-    console.log(border);
-    
-    while(i < arr.length) {
-      console.log(arr[i]);
-      i++;
-    }
-    console.log(border);
-  }
-}
-
-{
-  console.log('задача 4');
-
- ['10', '20', '30', '50', '235', '3000'].forEach(item => ['1', '2', '3'].includes(item[0]) && console.log(item));
- console.log(border);
-}
-
-{
-  console.log('задача 5');
-
-  ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВСК'].forEach(item => {
-    if (['СБ', 'ВСК'].includes(item)) {
-      const day = document.createElement('p');
-      day.innerText = item;
-      day.setAttribute('style', 'font-weight: bold;');
-      document.body.append(day);
-    }
-  });
-  console.log('вывел в документ');
-  console.log(border);
-}
-
-{
-  console.log('задача 6');
-
-  const arr = [1,2,3,4,5];
-  arr.push(6);
-
-  console.log(arr[arr.length - 1]);
-  console.log(border);
-}
-
-{
-  console.log('задача 7');
-  const flag = false;
-  if (flag) {
-    const arr = new Array;
-  
-    while(true) {
-      const data = prompt('введите число');
-  
-      if (data === '') {
-        console.log(arr);
-        arr.sort((a, b) => a - b);
-        console.log(arr);
-        break
-      }
-      const val = +data;
-  
-      if (!Number.isNaN(val)) {
-        arr.push(val);
-        continue
-      }
-      
-      alert('вы ввели не число!');
-    }
-  }
-  !flag && console.log('надоели промпты');
-  console.log(border);
-}
-
-{
-  console.log('задача 8');
-  const arr = [12, false, 'Текст', 4, 2, -5, 0];
-  let i = 0;
-
-  while(i < 1) { // не очень правда понимаю зачем while)
-    arr.reverse();
-    i++
-  }
-  console.log(arr);
-}
-
-{
-  console.log('задача 9');
-  const arr = [5,9,21,,,9,78,,,,6];
-  console.log(arr.length - arr.filter(item => item !== undefined).length);
-  console.log(border);
-}
-
-{
-  console.log('задача 10');
-  const arr = [1,8,0,13,76,8,7,0,22,10,2,3,0,2];
-
-  if (arr.filter(item => item === 0).length < 2) {
-    console.log(0)
-  } else {
-    const firstZeroIndex = arr.findIndex((item) => item === 0);
-    const lastZeroIndex  = arr.findLastIndex((item) => item === 0);
-    
-    const sum = arr.reduce((accum, item, index) => {
-      return index >= firstZeroIndex && index <= lastZeroIndex ? accum += item : accum;
-    }, 0)
-    console.log(sum);
-    console.log(border);
-  }
-}
-
-{
-  const flag = false;
-
-  if (flag) {
-    const height  = +prompt('высота треугольника');
     const width   = height * 2 - 1;
     const center  = Math.floor((width / 2));
-    const mainArr = new Array;
-
-    if (height) {
-      for (let i = 0; i < height; i++) {
-        const arr = new Array;
-        
-        for (let j = 0; j < width; j++) {
-          if ((j < center - i) || (j > center + i)) {
-            arr.push(' ');
-            continue
-          }
-          arr.push('*');
+    const mainArr = [];
+  
+    for (let i = 0; i < height; i++) {
+      const arr = [];
+      
+      for (let j = 0; j < width; j++) {
+        if ((j < center - i) || (j > center + i)) {
+          arr.push(' ');
+          continue
         }
-        mainArr.push(arr);
+        arr.push('*');
       }
-    
-      mainArr.forEach(row => {
-        console.log(row.join(' '));
-      })
-    } else alert('введите число')
-    
+      mainArr.push(arr);
+    }
 
+    if (isReverse) mainArr.reverse();
+  
+    mainArr.forEach(row => {
+      console.log(row.join(' '));
+    })
   }
 }
+
+task8(8, true);
+getBorder();
+
+const task9 = (fibArr = [0, 1]) => {
+  const fibLength = fibArr.length;
+  const nexNum    = fibArr[fibLength - 1] + fibArr[fibLength - 2];
+
+  if (nexNum > 1000) return fibArr;
+  fibArr.push(nexNum);
+  
+  return task9(fibArr);
+}
+
+console.log(task9());
+getBorder();
+
+const task10 = (num) => {
+  const sum = String(num).split('').map(item => +item).reduce((accum, item) => accum += item);
+  return sum > 9 ? task10(sum) : sum;
+}
+
+console.log(task10(99));
+getBorder();
+
+const task11 = (arr) => {
+  arr[0] && console.log(arr[0]);
+
+  return arr.length ? task11(arr.slice(1)) : 'done';
+}
+
+console.log(task11([1,2,3,4,5,6]));
+getBorder();
+
+const task12 = () => {
+  const name        = 'Роман';
+  const surname     = 'Русак';
+  const patronymic  = 'Сергеевич';
+  const groupNumber = 'FE127';
+  const firstLine   = 'Домашняя работа «Функции»';
+  const secondLine  = `Выполнил студент группы ${groupNumber}`;
+  const thirdLine   = [name,surname,patronymic].join(' ');
+  const borderTop   = '';
+  const borderBot   = '';
+  const borderChar  = '*';
+
+  const addChar = (lines, char = ' ', max) => { // видимо я неправильно логику заложил изначально в эту функцию и получилось какое-то чудовище =(
+    const getMaxLengStr = (lines) => Math.max(...lines);
+
+    const maxLength = max ? max : getMaxLengStr(lines.map(item => item.length)); //если на текущий момент не знаю самую длинную строке,то нахожу
+
+    const updateLines = lines.map(item => { 
+      //Добавляю необходимый символ, что бы длина выровнялась с самой длинной переданной строкой
+      if (item.length < maxLength) {
+        const newItem = item.split('');
+        for (let i = newItem.length; i < maxLength; i++) newItem.push(char);
+
+        return newItem.join('');
+      }
+      return item;
+    })
+    return !max ? [updateLines, maxLength] : updateLines; // если в функцию не передавалась длина самой длинной строки, то я ее находил внутри функцию и возвращаю, если передавалась то только новые строки верну
+    
+  }
+  
+  const [updateLines, maxLength] = addChar([firstLine, secondLine, thirdLine], ' ');
+  const updateBorders = addChar([borderTop, borderBot], borderChar, maxLength);
+  
+  [updateBorders[0], updateLines[0], updateLines[1], updateLines[2], updateBorders[1]].forEach(line => {
+    console.log(borderChar + line + borderChar);
+  })
+}
+
+task12();
