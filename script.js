@@ -166,6 +166,7 @@ const border = '==========';
         console.log(row.join(' '));
       })
     } else alert('введите число')
+    
 
   }
 }
