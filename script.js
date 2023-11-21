@@ -73,6 +73,7 @@ const task8 = (height, isReverse = false) => {
   }
 }
 
+
 task8(8, true);
 getBorder();
 
