@@ -27,14 +27,14 @@ function Contacts() {
     }
 
     this.addContact = (contact) => {
-        if (this.checkIsOn) {
+        if (this.checkIsOn()) {
             this.contacts.push(contact);
             console.log('контакт добавлен')
         }
     }
 
     this.editContact = (id, newContact) => {
-        if (this.checkIsOn) {
+        if (this.checkIsOn()) {
             const editableContact = this.contacts.find((item) => item.id === id);
             Object.assign(editableContact, newContact);
             console.log('контакт изменен');
@@ -42,7 +42,7 @@ function Contacts() {
     }
 
     this.removeContact = (id) => {
-        if (this.checkIsOn) {
+        if (this.checkIsOn()) {
             this.contacts = this.contacts.filter(item => item.id !== id);
             console.log('контакт удален');
         }
@@ -77,11 +77,11 @@ function ContactsController() {
     this.add = (name, surname, mail) => {
         let data = {};
         [ {name}, {surname}, {mail}].map(item => item).forEach(item => { //тут типо валидация
-            data = Object.assign(data, item);
+            Object.assign(data, item);
         })
 
         if (Object.values(data).length) {
-            data = Object.assign(data, {id: this.idGenerate()});
+            Object.assign(data, {id: this.idGenerate()});
             const contact = new this.contact(data);
             this.contacts.addContact(contact);
         } else {
