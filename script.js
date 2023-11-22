@@ -76,7 +76,7 @@ function ContactsController() {
 
     this.add = (name, surname, mail) => {
         let data = {};
-        [ {name}, {surname}, {mail}].map(item => item).forEach(item => { //тут типо валидация
+        [{name}, {surname}, {mail,}].map(item => Object.values(item).length && item).forEach(item => { //тут типо валидация
             Object.assign(data, item);
         })
 
