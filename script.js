@@ -49,7 +49,7 @@ function Contacts() {
     }
 }
 
-function ContactsController() {
+function ContactsController() { //я что-то увекся и мб лишнюю функцию добавил, задумка была в том, что я в ней хочу проводить валидацию и инитить объекты другие, а в случае если успешная валидация, то уже из нее дергать методы других объектов
     this.contact  = null;
     this.contacts = null;
 
