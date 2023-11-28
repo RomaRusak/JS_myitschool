@@ -1,134 +1,169 @@
 'use strict';
 
-function Contact({name, surname, mail, id,}) {
-    this.name    = name;
-    this.surname = surname;
-    this.mail    = mail;
-    this.id      = id;
-}
+const createNode = (nodeName) => {
+    const node = document.createElement(nodeName);
 
-function Contacts() {
-
-    this.contacts = null;
-    this.isOn     = null
+    const arrayCheck = (data) => Array.isArray(data) && data.length
     
-    this.init = () => {
-        this.contacts = [new Contact({name: 'Петя', surname: 'Петров', mail: 'Pieter@mail.com', id: 15})]; //тут id хардкодом для теста
-        this.isOn = false
-    }
-
-    this.toggle = () => {
-        this.isOn = !this.isOn;
-    }
-
-    this.checkIsOn = () => {
-        if (this.isOn) return true;
-        console.log('телефон выключен');
-    }
-
-    this.addContact = (contact) => {
-        if (this.checkIsOn()) {
-            this.contacts.push(contact);
-            console.log('контакт добавлен')
+    return (attributes) => {
+        if (arrayCheck(attributes)) {
+            attributes.forEach(item => {
+                if (arrayCheck(item)) {
+                    node.setAttribute(item[0], item[1]);
+                }
+            })
         }
-    }
-
-    this.editContact = (id, newContact) => {
-        if (this.checkIsOn()) {
-            const editableContact = this.contacts.find((item) => item.id === id);
-            Object.assign(editableContact, newContact);
-            console.log('контакт изменен');
-        } 
-    }
-
-    this.removeContact = (id) => {
-        if (this.checkIsOn()) {
-            this.contacts = this.contacts.filter(item => item.id !== id);
-            console.log('контакт удален');
+        
+        return (content) => {
+            if (content) node.innerHTML = content;
+            
+            return node;
         }
     }
 }
 
-function ContactsController() { //я что-то увекся и мб лишнюю функцию добавил, задумка была в том, что я в ней хочу проводить валидацию и инитить объекты другие, а в случае если успешная валидация, то уже из нее дергать методы других объектов
-    this.contact  = null;
-    this.contacts = null;
+function Todo({name, id}) {
+    this.name    = name;
+    this.id      = id;
+    this.isReady = false;
+}
 
-    this.init = (contact, contacts) => {
-        this.contact = contact;
-        this.contacts = new contacts
-        this.contacts.init();
-        this.contacts.toggle();
+function TodoController() {
+        this.todos = [];
+
+        this.getId = () => {
+            return this.todos.map(item => item.id);
+        }
+
+        this.generateId = () => {
+            const notFreeId = this.getId();
+            const id = Math.ceil(Math.random()*100);
+
+            return notFreeId.includes(id) ? this.generateId() : id;
+        }
+
+        this.toggleIsReadyStatus = (id) => {
+            this.todos = this.todos.map(item => {
+                if (item.id === id) return {...item, isReady: !item.isReady}
+                return item;
+            })
+            this.render();
+        }
+
+        this.add = (val) => {
+            this.todos.push(new Todo({name: val, id: this.generateId()}));
+            this.render();
+        }
+
+        this.remove = (id) => {
+            this.todos = this.todos.filter(item => item.id !== id);
+            this.render();
+        }
+
+        this.updateTodoName =(id, value) => {
+            this.todos = this.todos.map(item => {
+                if (item.id === id) return {...item, name: value}
+                return item;
+            })
+            this.render();
+        }
+}
+
+function TodoContollerUI() {
+    TodoController.call(this);
+
+    this.todoInput       = null;
+    this.inputValidClass = 'is-valid'
+    this.isInputValValid = false;
+    this.todosList       = null;
+
+    this.init = () => {
+        this.todoInput = document.querySelector('.todo-name-input');
+        this.todosList = document.querySelector('.todos-list');
+
+        this.checkInputValValid = this.checkInputValValid.bind(this);
+
+        this.todoInput.addEventListener('input', this.checkInputValValid)
+        window.addEventListener('keyup', (e) => {
+            if (e.code === 'Enter' && this.isInputValValid) {
+                this.add(this.todoInput.value);
+                this.todoInput.value = '';
+                this.checkInputValValid();
+            } 
+        });
     }
 
-    this.getId = () => {
-        return this.contacts.contacts.map(item => item.id)
+    this.checkInputValValid = () => {
+        const inputVal = this.todoInput.value;
+        
+        const rules = [
+            (val) => val.trim().length > 2, 
+        ];
+
+        this.isInputValValid = rules.map(check => check(inputVal)).every(checkResult => checkResult);
+        this.toggleInputClass();
     }
 
-    this.getContatcs = () => {
-        return this.contacts.contacts;
+    this.render = () => {
+       this.todosList.innerHTML = '';
+
+       this.todos.forEach(item => {
+            const todoLi = createNode('div')([['class', item.isReady ? 'todos-li todo-ready' : 'todos-li'], ['data-id', item.id]])();
+            const todoCheckbox = createNode('div')([['class', 'todo-checkbox']])(
+                item.isReady
+                ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" /></svg>`
+                : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>`
+            );
+            const todoText = createNode('p')([['class', 'todo-text']])(item.name);
+            const buttonsWrapper = createNode('div')([['class', 'todo-buttons-wrapper']])();
+            const removeButton = createNode('button')([['class', 'todo-remove-button todo-button']])('remove');
+            const editButton = createNode('button')([['class', 'todo-edit-button todo-button']])('edit');
+
+            buttonsWrapper.append(removeButton, editButton);
+            todoLi.append(todoCheckbox, todoText, buttonsWrapper);
+            this.todosList.append(todoLi);
+
+            todoCheckbox.addEventListener('click', () => {
+                this.toggleIsReadyStatus(item.id);
+            });
+
+            removeButton.addEventListener('click', () => {
+                this.remove(item.id);
+            });
+
+            editButton.addEventListener('click', () => {
+                this.addContentEditableAttr(item.id);
+            });
+       })
     }
 
-    this.idGenerate = () => {
-        const notFreeId = this.getId();
-        const id = Math.ceil(Math.random()*100);
-        return notFreeId.includes(id) ? this.idGenerate() : id;
+    this.toggleInputClass = () => {
+        if (this.isInputValValid && !this.todoInput.classList.contains(this.inputValidClass)) {
+            this.todoInput.classList.add(this.inputValidClass);
+        };
+
+        if (!this.isInputValValid && this.todoInput.classList.contains(this.inputValidClass)) {
+            this.todoInput.classList.remove(this.inputValidClass);
+        }
     }
 
-    this.add = (name, surname, mail) => {
-        let data = {};
-        [{name}, {surname}, {mail,}].map(item => Object.values(item).length && item).forEach(item => { //тут типо валидация
-            Object.assign(data, item);
+    this.addContentEditableAttr = (id) => {
+        const editableLi = document.querySelector(`.todos-li[data-id="${id}"]`);
+        const editableTodoText = editableLi.querySelector('.todo-text');
+        const editButton = editableLi.querySelector('.todo-edit-button');
+        const EDITABLE_BUTTON_CLASS = 'editable-button-active';
+
+        editableTodoText.setAttribute('contenteditable', '');
+        editableTodoText.classList.add('editable-content');
+
+        editButton.innerText = 'Save';
+        editButton.classList.add(EDITABLE_BUTTON_CLASS);
+        editButton.addEventListener('click', () => {
+            this.updateTodoName(id, editableTodoText.innerText);
         })
 
-        if (Object.values(data).length) {
-            Object.assign(data, {id: this.idGenerate()});
-            const contact = new this.contact(data);
-            this.contacts.addContact(contact);
-        } else {
-            console.log('ничего не ввели');
-        }
     }
+} 
 
-    this.edit = (id, newContact) => {
-        if (id ) {
-            if (Object.values(newContact).length) {
-                this.contacts.editContact(id, newContact);
-            } else {
-                console.log('нечего редактировать');
-            }
-        } else {
-            console.log('не указан контакт')
-        }
-    }  
-    
-    this.remove = (id) => {
-        if (this.getId().includes(id)) {
-            this.contacts.removeContact(id);
-        } else {
-            console.log('контакт не найден');
-        }
-    }
-
-    this.showAllContatcs = () => {
-        const allContacts = this.getContatcs()
-        if (allContacts.length) {
-            allContacts.forEach((item, index) => {
-                console.log(`${index + 1} контакт:`);
-                Object.values(item).forEach(data => {
-                    allContacts[index].id !== data && console.log(data);
-                })
-                console.log('**********');
-            })
-        } else {
-            console.log('ваш контакт пуст')
-        }
-    }
-}
-
-const contactsController = new ContactsController;
-contactsController.init(Contact, Contacts);
-contactsController.add('Рома', 'Русак', 'roma@gamil.com');
-contactsController.edit(15, {name: 'Катя', surname: 'Иванова'});
-contactsController.remove(15);
-contactsController.add('Лиза', 'Иванова-Петрова', 'someemail@gmail.com');
-contactsController.showAllContatcs();
+const todoList = new TodoContollerUI;
+todoList.init();
