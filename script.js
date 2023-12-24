@@ -95,11 +95,14 @@ class Contacts {
     edit(id, newContact) {
         const currentUser = this.data.find(item => item.getData().id === id);
         currentUser.setData(newContact);
+        this.init();
         this.render();
     }
 }
 
 class ContactsUI extends Contacts {
+
+    static NodeCreator = null;
 
     #inputs = {
         name:    {
@@ -158,6 +161,7 @@ class ContactsUI extends Contacts {
     }
 
     init(NodeCreator) {
+        
         Object.keys(this.#inputs).forEach(input => {
             this.initInput(input);
         })
@@ -184,7 +188,9 @@ class ContactsUI extends Contacts {
                 );
         }
 
-        this.#nodeCreator = NodeCreator;
+        if (NodeCreator && !ContactsUI.NodeCreator) ContactsUI.NodeCreator = NodeCreator;
+        this.#nodeCreator = ContactsUI.NodeCreator;
+
         this.#contactsWrapper = document.body.querySelector('.contacts-wrapper');
     }
 
@@ -292,7 +298,7 @@ class ContactsUI extends Contacts {
         }
 
         editButton.onclick= () => {
-            this.init(this.#nodeCreator);
+            this.init();
             this.cleanInputs();
             this.render();
         };
