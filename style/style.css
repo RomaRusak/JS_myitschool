@@ -1,1 +1,112 @@
-/*# sourceMappingURL=style.css.map */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  padding: 35px;
+  font-size: 16px;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+.custom-button {
+  padding: 5px 10px;
+  min-width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5F5;
+  transition: all 0.3s ease-in;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid black;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  box-shadow: 2px 2px 4px black;
+}
+.container .inputs-wrapper {
+  padding: 20px;
+  background-color: #F5F5F5;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-content: center;
+  gap: 15px;
+  border: 2px solid #FAEBD7;
+}
+.container .inputs-wrapper .input-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+  align-items: center;
+}
+.container .inputs-wrapper .input-wrapper textarea {
+  width: 100%;
+  resize: none;
+}
+.container .inputs-wrapper .input-wrapper label {
+  cursor: pointer;
+}
+.container .inputs-wrapper .input-wrapper textarea,
+.container .inputs-wrapper .input-wrapper input {
+  padding: 5px;
+  border-radius: 3px;
+  outline: none;
+  border: 2px solid #E32636;
+}
+.container .inputs-wrapper .input-wrapper textarea.valid,
+.container .inputs-wrapper .input-wrapper input.valid {
+  border-color: lightgreen;
+}
+.container .inputs-wrapper .button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container .inputs-wrapper .button-wrapper button {
+  padding: 4px 15px;
+  cursor: pointer;
+}
+
+.contacts-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  background-color: #E5E4E2;
+  min-height: 400px;
+}
+.contacts-wrapper .contact-wrapper {
+  padding: 5px 10px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  align-items: center;
+  min-height: 60px;
+  gap: 10px;
+}
+.contacts-wrapper .contact-wrapper > * {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.contacts-wrapper .contact-wrapper:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+.contacts-wrapper .contact-wrapper .buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}/*# sourceMappingURL=style.css.map */
