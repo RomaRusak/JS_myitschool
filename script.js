@@ -58,8 +58,7 @@ class Contacts {
     
 
     getId() {
-        
-        return [];
+        return this.data.map(item => item.getData().id);
     }
 
     generateId() {
