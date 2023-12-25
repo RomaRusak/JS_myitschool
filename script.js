@@ -283,7 +283,7 @@ class ContactsUI extends Contacts {
         const submitButtonOldVal = this.#submitButton.innerText;
         this.#submitButton.innerText = 'Save';
 
-        this.addRemButtonsDisabledStatus();
+        this.addButtonsDisabledStatus(id);
         
         const inputs = this.getInput(...Object.keys(this.#inputs));
         const currentData = this.data.map(item => item.getData()).find(item => item.id === id);
@@ -318,10 +318,22 @@ class ContactsUI extends Contacts {
 
     }
 
-    addRemButtonsDisabledStatus() {
-        this.#removeButtons = this.#contactsWrapper.querySelectorAll('.remove-button');
-        this.#removeButtons.forEach(button => {
-            button.setAttribute('disabled', '');
+    addButtonsDisabledStatus(id) { //тут костыли страшные,но не успеваю переделать(
+        const editableItemIndex = this.data.findIndex((item) => item.getData().id === id);
+
+        const contactItems = this.#contactsWrapper.querySelectorAll('.contact-wrapper');
+
+        const addDisStatus = button => button.setAttribute('disabled', '');
+
+        contactItems.forEach((div,index) =>  {
+
+            if (index !== editableItemIndex) {
+                div.querySelectorAll('button').forEach(button => {
+                    addDisStatus(button);
+                })
+            } else {
+                addDisStatus(div.querySelector('button.remove-button'));
+            }
         })
     }
 } 
