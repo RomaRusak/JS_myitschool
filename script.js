@@ -177,7 +177,7 @@ class ContactsUI extends Contacts {
         this.#submitButton = document.getElementById('submit-button');
         this.#submitButton.innerText = 'Add';
         this.#submitButton.onclick = () => {
-            const inputs = this.getInput(...Object.keys(this.#inputs));
+            const inputs = this.getInputs();
             
             this.add(
                     inputs.name.value,
@@ -215,12 +215,14 @@ class ContactsUI extends Contacts {
         this.updateSubmitButton();
     }
 
-    getInput(...key) {
-        if (Array.isArray(key)) {
+    getInputs() { 
+        const keys = Object.keys(this.#inputs); 
+
+        if (keys.length) {
             let arrWrapper = {};
 
-            key.forEach(item => {
-                const {[item]: {input} } = this.#inputs;
+            keys.forEach(item => {
+                const {[item]: {input}} = this.#inputs; // каким-то чудом оно работает, а я боюсь теперь сюда лезть)
                 arrWrapper = {...arrWrapper, [item]: input}
             })
             
@@ -237,7 +239,7 @@ class ContactsUI extends Contacts {
     }
 
     cleanInputs() {
-        const inputs = this.getInput(...Object.keys(this.#inputs));
+        const inputs = this.getInputs();
         
         for (const key in inputs) {
             const currentInput = inputs[key];
@@ -245,7 +247,6 @@ class ContactsUI extends Contacts {
 
             this.validation(currentInput.name, currentInput.value);
         }
-
     }
 
     render() {
@@ -284,7 +285,7 @@ class ContactsUI extends Contacts {
 
         this.addButtonsDisabledStatus(id);
         
-        const inputs = this.getInput(...Object.keys(this.#inputs));
+        const inputs = this.getInputs();
         const currentData = this.data.map(item => item.getData()).find(item => item.id === id);
         
         for (const key in inputs) {
@@ -304,7 +305,7 @@ class ContactsUI extends Contacts {
 
         this.#submitButton.onclick = () => {
             const inputs = Object.entries( //вот тут конечно все плохо, но он хоть работает, оставлю пока так(
-                this.getInput(...Object.keys(this.#inputs))).map(item => {
+                this.getInputs()).map(item => {
                     return Object.values(item).map((item, index)  => index === 1 ? item.value : item);
                 }
             );
