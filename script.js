@@ -219,14 +219,14 @@ class ContactsUI extends Contacts {
         const keys = Object.keys(this.#inputs); 
 
         if (keys.length) {
-            let arrWrapper = {};
+            let inputs = {};
 
             keys.forEach(item => {
                 const {[item]: {input}} = this.#inputs; // каким-то чудом оно работает, а я боюсь теперь сюда лезть)
-                arrWrapper = {...arrWrapper, [item]: input}
+                inputs = {...inputs, [item]: input}
             })
             
-            return arrWrapper;
+            return inputs;
         }
     }
 
